@@ -1,0 +1,24 @@
+{% extends "AriiTimeBundle::layout.html.twig" %}
+{% block body %}
+<script charset="utf-8">
+
+dhtmlxEvent(window,"load",function() {
+    var dhxLayout = new dhtmlXLayoutObject(document.body,"3L");
+
+    dhxLayout.cells("a").hideHeader();
+    dhxLayout.cells("a").setHeight(256);
+
+    dhxLayout.cells("a").hideHeader();
+    dhxGrid = dhxLayout.cells("b").attachGrid();
+    dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxGrid.setHeader("{{ "ISO" | trans }},#cspan,{{ "Name" | trans }},{{ "Local name" | trans }}");
+    dhxGrid.attachHeader("#text_filter,#cspan,#text_filter,#text_filter");
+    dhxGrid.setInitWidths("30,30,250,*");
+    dhxGrid.setColAlign("left,left,left,left");
+    dhxGrid.setColTypes("ro,ro,ro,ro");
+    dhxGrid.setColSorting("str,str,str,str");
+    dhxGrid.init();
+    dhxGrid.loadXML("{{ url('xml_Time_regions_list') }}");
+});
+</script>
+{% endblock %}
