@@ -1,0 +1,80 @@
+# --------------------------------------------------------------------------
+# PAGES PRINCIPALES
+# --------------------------------------------------------------------------
+arii_Time_index:
+    pattern:  /
+    defaults: { _controller: AriiTimeBundle:Default:index }
+
+arii_Time_readme:
+    pattern:  /readme
+    defaults: { _controller: AriiTimeBundle:Default:readme }
+
+xml_Time_toolbar:
+    pattern:  /toolbar.xml
+    defaults: { _controller: AriiTimeBundle:Default:toolbar }
+
+json_Time_ribbon:
+    pattern:  /ribbon.json
+    defaults: { _controller: AriiTimeBundle:Default:ribbon }
+
+xml_Time_menu:
+    pattern:  /menu.xml
+    defaults: { _controller: AriiTimeBundle:Default:menu }
+
+
+# --------------------------------------------------------------------------
+# ZONES
+# --------------------------------------------------------------------------
+arii_Time_zones:
+    pattern:  /zones
+    defaults: { _controller: AriiTimeBundle:Zones:index }
+
+xml_Time_zones:
+    pattern:  /zones/grid.xml
+    defaults: { _controller: AriiTimeBundle:Zones:grid }
+
+xml_Time_zones_tree:
+    pattern:  /zones/tree.xml
+    defaults: { _controller: AriiTimeBundle:Zones:tree }
+
+xml_Time_zones_form:
+    pattern:  /zones/form.xml
+    defaults: { _controller: AriiTimeBundle:Zones:form }
+
+# --------------------------------------------------------------------------
+# REFERENCES
+# --------------------------------------------------------------------------
+arii_Time_references:
+    pattern:  /references
+    defaults: { _controller: AriiTimeBundle:References:index }
+
+xml_Time_references:
+    pattern:  /references/grid.xml
+    defaults: { _controller: AriiTimeBundle:References:grid }
+
+xml_Time_references_tree:
+    pattern:  /references/tree.xml
+    defaults: { _controller: AriiTimeBundle:References:tree }
+
+
+# --------------------------------------------------------------------------
+# CALENDARS
+# --------------------------------------------------------------------------
+arii_Time_calendars:
+    pattern:  /calendars
+    defaults: { _controller: AriiTimeBundle:Calendars:index }
+
+xml_Time_calendars:
+    pattern:  /calendars/grid.xml
+    defaults: { _controller: AriiTimeBundle:Calendars:grid }
+
+# --------------------------------------------------------------------------
+# RULES
+# --------------------------------------------------------------------------
+arii_Time_rules:
+    pattern:  /rules
+    defaults: { _controller: AriiTimeBundle:Rules:index }
+
+xml_Time_rules:
+    pattern:  /rules/grid.xml
+    defaults: { _controller: AriiTimeBundle:Rules:grid }

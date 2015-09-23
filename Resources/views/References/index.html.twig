@@ -1,7 +1,8 @@
 {% extends "AriiTimeBundle::layout.html.twig" %}
 {% block body %}
-<script language="javascript">
-dhtmlxEvent(window,"load",function(){  
+<script charset="utf-8">
+
+dhtmlxEvent(window,"load",function() {
         
     globalLayout = new dhtmlXLayoutObject(document.body,"2U");  
     globalLayout.cells("a").setWidth(350); 
@@ -18,8 +19,21 @@ dhtmlxEvent(window,"load",function(){
     myRibbon.attachEvent("onStateChange", StateRibbon );
     myRibbon.attachEvent("onClick", ClickRibbon );    
     
+    dhxTree = globalLayout.cells("a").attachTree();
+    dhxTree.setImagesPath("{{ asset('bundles/ariicore/images/tree/') }}");
+    dhxTree.load( "{{ url('xml_Time_zones_tree') }}" );
 
+    dhxGrid = globalLayout.cells("b").attachGrid();
+    dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxGrid.setHeader("{{ "ISO" | trans }},#cspan,{{ "Name" | trans }},{{ "Local name" | trans }}");
+    dhxGrid.attachHeader("#text_filter,#cspan,#text_filter,#text_filter");
+    dhxGrid.setInitWidths("30,30,250,*");
+    dhxGrid.setColAlign("left,left,left,left");
+    dhxGrid.setColTypes("ro,ro,ro,ro");
+    dhxGrid.setColSorting("str,str,str,str");
+    dhxGrid.init();
+    dhxGrid.load("{{ url('xml_Time_zones') }}");
+    
 });
-
 </script>
 {% endblock %}

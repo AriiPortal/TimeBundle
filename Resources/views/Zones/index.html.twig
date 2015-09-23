@@ -1,0 +1,91 @@
+{% extends "AriiTimeBundle::layout.html.twig" %}
+{% block body %}
+<script charset="utf-8">
+
+dhtmlxEvent(window,"load",function() {
+        
+    globalLayout = new dhtmlXLayoutObject(document.body,"3L");  
+    globalLayout.cells("a").setWidth(350); 
+    globalLayout.cells("a").hideHeader(); 
+    globalLayout.cells("b").hideHeader(); 
+
+    globalMenu = globalLayout.cells("a").attachMenu();
+    globalMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
+    globalMenu.loadStruct("{{ url('xml_menu') }}?route={{ app.request.attributes.get('_route') }}");
+
+    myRibbon = globalLayout.cells("a").attachRibbon(); 
+    myRibbon.setIconPath( "{{ asset('/bundles/ariicore/images/ribbon/') }}" );
+    myRibbon.loadStruct("{{ url('json_Time_ribbon') }}");
+    myRibbon.attachEvent("onStateChange", StateRibbon );
+    myRibbon.attachEvent("onClick", ClickRibbon );    
+    
+    dhxTree = globalLayout.cells("a").attachTree();
+    dhxTree.setImagesPath("{{ asset('bundles/ariicore/images/tree/') }}");
+    dhxTree.load( "{{ url('xml_Time_zones_tree') }}" );
+
+    dhxGrid = globalLayout.cells("b").attachGrid();
+    dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxGrid.setHeader("{{ "Code" | trans }},{{ "Name" | trans }},{{ "Comment" | trans }},{{ "ISO" | trans }},{{ "Type" | trans }},{{ "Latitude" | trans }},{{ "Longitude" | trans }}");
+    dhxGrid.attachHeader("#text_filter,#text_filter,#text_filter,#text_filter,#select_filter,#numeric_filter,#numeric_filter");
+    dhxGrid.setInitWidths("80,200,*,50,100,100,100");
+    dhxGrid.setColAlign("left,left,left,left,left,right,right");
+    dhxGrid.setColTypes("ro,ro,ro,ro,ro,ro,ro");
+    dhxGrid.setColSorting("str,str,str,str,str,int,int");
+    dhxGrid.init();
+    dhxGrid.load("{{ url('xml_Time_zones') }}");
+
+    myTab = globalLayout.cells("c").attachLayout("2U");
+    myTab.cells("a").hideHeader();
+    myTab.cells("a").setWidth(350); 
+    myTab.cells("b").hideHeader(); 
+    
+    formData = [
+        { type: "settings", position: "label-left", labelWidth: 110, inputWidth: 200,labelAlign: "left",noteWidth: 200 },
+        {type: "hidden",name: "id"},         
+        { type: "input",
+          name: "NAME",
+          label: "{{ "Site Name"| trans }}",
+          required: true
+        },
+        { type: "input",
+          rows: 3,
+          name: "COMMENT",
+          label: "{{ "Description"| trans }}"
+        },
+        { type: "input",
+          name: "CODE",
+          label: "{{ "Country code"| trans }}",
+          required: true
+        },
+        { type: "input",
+          name: "LATITUDE",
+          label: "{{ "Latitude"| trans }}"
+        },
+        { type: "input",
+          name: "LONGITUDE",
+          label: "{{ "Longitude"| trans }}"
+        }
+    ];
+    myform = myTab.cells("a").attachForm(formData);
+    myMap = myTab.cells("b").attachMap();
+
+    dhxGrid.attachEvent("onRowDblClicked", function (rid) {
+        globalLayout.cells("c").progressOn();
+        myform.clear();
+        myform.load("{{ url('xml_Time_zones_form') }}?id="+rid, function () {
+            globalLayout.cells("c").progressOff();
+            var latLng = new google.maps.LatLng(  myform.getItemValue("LATITUDE"), myform.getItemValue("LONGITUDE") ); 
+            var marker = new google.maps.Marker({
+             position : latLng,
+             map      : myMap,
+             title    : "test"
+             //icon     : "marker_lille.gif" // Chemin de l'image du marqueur pour surcharger celui par défaut
+           });
+
+           myMap.panTo(latLng);   
+       });
+   });
+
+});
+</script>
+{% endblock %}
