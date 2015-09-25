@@ -31,13 +31,6 @@ class Zones
     /**
      * @var string
      *
-     * @ORM\Column(name="comment", type="string", length=50)
-     */
-    private $comment;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="code", type="string", length=6)
      */
     private $code;
@@ -54,13 +47,6 @@ class Zones
      * @ORM\JoinColumn(nullable=true)
      **/
     private $type;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lang", type="string", length=2)
-     */
-    private $lang;
 
     /**
      * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Zones")

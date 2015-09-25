@@ -4,11 +4,12 @@
 
 dhtmlxEvent(window,"load",function() {
         
-    globalLayout = new dhtmlXLayoutObject(document.body,"2U");  
+    globalLayout = new dhtmlXLayoutObject(document.body,"3L");  
     globalLayout.cells("a").setWidth(350); 
     globalLayout.cells("a").hideHeader(); 
     globalLayout.cells("b").hideHeader(); 
-
+    globalLayout.cells("c").hideHeader(); 
+    
     globalMenu = globalLayout.cells("a").attachMenu();
     globalMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
     globalMenu.loadStruct("{{ url('xml_menu') }}?route={{ app.request.attributes.get('_route') }}");
@@ -19,21 +20,104 @@ dhtmlxEvent(window,"load",function() {
     myRibbon.attachEvent("onStateChange", StateRibbon );
     myRibbon.attachEvent("onClick", ClickRibbon );    
     
-    dhxTree = globalLayout.cells("a").attachTree();
-    dhxTree.setImagesPath("{{ asset('bundles/ariicore/images/tree/') }}");
-    dhxTree.load( "{{ url('xml_Time_zones_tree') }}" );
+    dhxList = globalLayout.cells("a").attachGrid();
+    dhxList.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxList.setHeader("{{ "Name" | trans }},{{ "Comment" | trans }},{{ "From" | trans }},{{ "To" | trans }}");
+    dhxList.attachHeader("#text_filter,#text_filter,#numeric_filter,#numeric_filter");
+    dhxList.setInitWidths("80,*,0,50");
+    dhxList.setColAlign("left,left,right,right");
+    dhxList.setColTypes("ro,ro,ro,ro");
+    dhxList.setColSorting("str,str,int,int");
+    dhxList.init();
+    dhxList.load("{{ url('xml_Time_references_list') }}");
+    dhxList.attachEvent("onRowDblClicked", Detail );
 
-    dhxGrid = globalLayout.cells("b").attachGrid();
+    var myTab = globalLayout.cells("b").attachLayout("2U");
+    myTab.cells("a").setWidth(350); 
+    myTab.cells("a").hideHeader();     
+    myTab.cells("b").hideHeader();
+    // myTab.addTab("reference","{{ "Reference" | trans }}","100px", null, true);
+    // myTab.addTab("rules","{{ "Rules" | trans }}","100px");
+
+   formData = [
+        { type: "settings", position: "label-left", labelWidth: 110, inputWidth: 200,labelAlign: "right",noteWidth: 200 },
+        {type: "hidden",name: "id"},         
+        { type: "input",
+          name: "NAME",
+          label: "{{ "Site Name"| trans }}",
+          required: true
+        },
+        { type: "input",
+          rows: 3,
+          name: "DESCRIPTION",
+          label: "{{ "Description"| trans }}"
+        },
+        { type: "input",
+          name: "COMMENT",
+          label: "{{ "Comment"| trans }}"
+        },
+        { type: "input",
+          name: "YEAR_FROM",
+          label: "{{ "From"| trans }}"
+        },
+        { type: "input",
+          name: "YEAR_TO",
+          label: "{{ "To"| trans }}"
+        }
+    ];
+    myForm = myTab.cells("a").attachForm(formData);
+
+    dhxGrid = myTab.cells("b").attachGrid();
     dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
-    dhxGrid.setHeader("{{ "ISO" | trans }},#cspan,{{ "Name" | trans }},{{ "Local name" | trans }}");
-    dhxGrid.attachHeader("#text_filter,#cspan,#text_filter,#text_filter");
-    dhxGrid.setInitWidths("30,30,250,*");
-    dhxGrid.setColAlign("left,left,left,left");
-    dhxGrid.setColTypes("ro,ro,ro,ro");
-    dhxGrid.setColSorting("str,str,str,str");
+    dhxGrid.setHeader("{{ "Name" | trans }},{{ "Description" | trans }},{{ "Rule" | trans }}");
+    dhxGrid.attachHeader("#text_filter,#text_filter,#text_filter");
+    dhxGrid.setInitWidths("250,*,300");
+    dhxGrid.setColAlign("left,left,left");
+    dhxGrid.setColTypes("ro,ro,ro");
+    dhxGrid.setColSorting("str,str,str");
+    dhxGrid.enableDragAndDrop(true);    
     dhxGrid.init();
-    dhxGrid.load("{{ url('xml_Time_zones') }}");
+
     
+    var myWork = globalLayout.cells("c").attachLayout("2U");
+    myWork.cells("b").setWidth(350); 
+    myWork.cells("a").hideHeader();     
+    myWork.cells("b").hideHeader();     
+
+    // Liste des règles
+    dhxRules = myWork.cells("a").attachGrid();
+    dhxRules.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxRules.setHeader("{{ "Name" | trans }},{{ "Description" | trans }},{{ "Rule" | trans }}");
+    dhxRules.attachHeader("#text_filter,#text_filter,#text_filter");
+    dhxRules.setInitWidths("200,*,300");
+    dhxRules.setColAlign("left,left,left");
+    dhxRules.setColTypes("ro,ro,ro");
+    dhxRules.setColSorting("str,str,str");
+    dhxRules.enableDragAndDrop(true);
+    dhxRules.init();
+    dhxRules.load("{{ url('xml_Time_rules') }}");
+    
+    // Zone de test
+    dhxTest = myWork.cells("b").attachGrid();
+    dhxTest.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxTest.setHeader("{{ "Name" | trans }},{{ "Date" | trans }}");
+    dhxTest.attachHeader("#text_filter,#text_filter");
+    dhxTest.setInitWidths("*,150");
+    dhxTest.setColAlign("left,right");
+    dhxTest.setColTypes("ro,ro");
+    dhxTest.setColSorting("str,date");
+    dhxTest.enableDragAndDrop(true);
+    dhxTest.init();
+
 });
+
+function Detail(id) {
+    globalLayout.cells("b").progressOn();
+    myForm.load("{{ url('xml_Time_references_form') }}?id="+id, function(){    
+        dhxGrid.clearAndLoad("{{ url('xml_Time_references_rules') }}?id="+id, function(){    
+            globalLayout.cells("b").progressOff();
+        });    
+    });    
+}
 </script>
 {% endblock %}

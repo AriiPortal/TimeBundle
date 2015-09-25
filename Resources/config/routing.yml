@@ -56,6 +56,17 @@ xml_Time_references_tree:
     pattern:  /references/tree.xml
     defaults: { _controller: AriiTimeBundle:References:tree }
 
+xml_Time_references_list:
+    pattern:  /references/list.xml
+    defaults: { _controller: AriiTimeBundle:References:list }
+
+xml_Time_references_form:
+    pattern:  /references/form.xml
+    defaults: { _controller: AriiTimeBundle:References:form }
+
+xml_Time_references_rules:
+    pattern:  /references/rules.xml
+    defaults: { _controller: AriiTimeBundle:References:rules }
 
 # --------------------------------------------------------------------------
 # CALENDARS
@@ -75,6 +86,34 @@ arii_Time_rules:
     pattern:  /rules
     defaults: { _controller: AriiTimeBundle:Rules:index }
 
+xml_Time_rules_toolbar:
+    pattern:  /rules/toolbar.xml
+    defaults: { _controller: AriiTimeBundle:Rules:toolbar }
+
 xml_Time_rules:
     pattern:  /rules/grid.xml
     defaults: { _controller: AriiTimeBundle:Rules:grid }
+
+xml_Time_rules_form:
+    pattern:  /rules/form.xml
+    defaults: { _controller: AriiTimeBundle:Rules:form }
+
+
+xml_Time_rule_test:
+    pattern:  /rules/test.xml
+    defaults: { _controller: AriiTimeBundle:Rules:test }
+
+xml_Time_rule_test_schedule:
+    pattern:  /rules/schedule.xml
+    defaults: { _controller: AriiTimeBundle:Rules:schedule }
+
+# --------------------------------------------------------------------------
+# DAYS
+# --------------------------------------------------------------------------
+arii_Time_days:
+    pattern:  /days
+    defaults: { _controller: AriiTimeBundle:Days:index }
+
+xml_Time_days:
+    pattern:  /days/grid.xml
+    defaults: { _controller: AriiTimeBundle:Days:grid }

@@ -35,20 +35,6 @@ class Calendars
     private $zone;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=255)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="comment", type="string", length=512)
-     */
-    private $comment;
-
-    /**
      * Get id
      *
      * @return integer 

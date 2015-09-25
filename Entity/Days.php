@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Audit
  *
- * @ORM\Table(name="TC_RULES")
- * @ORM\Entity(repositoryClass="Arii\TimeBundle\Entity\RulesRepository")
+ * @ORM\Table(name="TC_DAYS")
+ * @ORM\Entity(repositoryClass="Arii\TimeBundle\Entity\DaysRepository")
  */
-class Rules
+class Days
 {
     /**
      * @var integer
@@ -29,17 +29,11 @@ class Rules
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Zones")
-     * @ORM\JoinColumn(nullable=true)
-     **/
-    private $zone;
-
-    /**
-     * @var string
+     * @var datetime
      *
-     * @ORM\Column(name="rule", type="string", length=50)
+     * @ORM\Column(name="day", type="datetime")
      */
-    private $rule;
+    private $day;
 
     /**
      * Get id

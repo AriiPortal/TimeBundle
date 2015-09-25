@@ -29,6 +29,20 @@ class References
     private $name;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="year_from", type="smallint" )
+     */
+    private $year_from;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="year_to", type="smallint" )
+     */
+    private $year_to;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Zones")
      * @ORM\JoinColumn(nullable=true)
      **/
