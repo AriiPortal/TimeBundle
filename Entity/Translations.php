@@ -73,4 +73,142 @@ class Translations
         return $this->id;
     }
 
+
+    /**
+     * Set table
+     *
+     * @param string $table
+     * @return Translations
+     */
+    public function setTable($table)
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * Get table
+     *
+     * @return string 
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    /**
+     * Set id_table
+     *
+     * @param integer $idTable
+     * @return Translations
+     */
+    public function setIdTable($idTable)
+    {
+        $this->id_table = $idTable;
+
+        return $this;
+    }
+
+    /**
+     * Get id_table
+     *
+     * @return integer 
+     */
+    public function getIdTable()
+    {
+        return $this->id_table;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return Translations
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Translations
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Translations
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return Translations
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
 }

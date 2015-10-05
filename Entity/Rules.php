@@ -42,6 +42,13 @@ class Rules
     private $rule;
 
     /**
+     * @var datetime
+     *
+     * @ORM\Column(name="updated", type="datetime" )
+     */
+    private $updated;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -210,5 +217,97 @@ class Rules
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Rules
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set rule
+     *
+     * @param string $rule
+     * @return Rules
+     */
+    public function setRule($rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Get rule
+     *
+     * @return string 
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     * @return Rules
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime 
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param \Arii\TimeBundle\Entity\Zones $zone
+     * @return Rules
+     */
+    public function setZone(\Arii\TimeBundle\Entity\Zones $zone = null)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return \Arii\TimeBundle\Entity\Zones 
+     */
+    public function getZone()
+    {
+        return $this->zone;
     }
 }

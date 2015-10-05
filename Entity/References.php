@@ -24,7 +24,7 @@ class References
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=20)
+     * @ORM\Column(name="name", type="string", length=20, unique=true)
      */
     private $name;
 
@@ -231,5 +231,143 @@ class References
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return References
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set year_from
+     *
+     * @param integer $yearFrom
+     * @return References
+     */
+    public function setYearFrom($yearFrom)
+    {
+        $this->year_from = $yearFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get year_from
+     *
+     * @return integer 
+     */
+    public function getYearFrom()
+    {
+        return $this->year_from;
+    }
+
+    /**
+     * Set year_to
+     *
+     * @param integer $yearTo
+     * @return References
+     */
+    public function setYearTo($yearTo)
+    {
+        $this->year_to = $yearTo;
+
+        return $this;
+    }
+
+    /**
+     * Get year_to
+     *
+     * @return integer 
+     */
+    public function getYearTo()
+    {
+        return $this->year_to;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return References
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return References
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string 
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param \Arii\TimeBundle\Entity\Zones $zone
+     * @return References
+     */
+    public function setZone(\Arii\TimeBundle\Entity\Zones $zone = null)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return \Arii\TimeBundle\Entity\Zones 
+     */
+    public function getZone()
+    {
+        return $this->zone;
     }
 }

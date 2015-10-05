@@ -14,26 +14,59 @@ class ZonesController extends Controller
     }
 
     public function gridAction() {
+        $sql = $this->container->get('arii_core.sql');                  
+        $sql->setDriver($this->container->getParameter('database_driver'));
+        
+        $request = $this->getRequest();
+        $locale = $request->getLocale();
+       
+        $qry = $sql->Select(array('tz.ID','tt.NAME','tt.DESCRIPTION','tz.CODE','tz.PARENT_ID','tz.ISO','tz.TYPE_ID','tz.LATITUDE','tz.LONGITUDE'))
+                .$sql->From(array('TC_ZONES tz'))
+                .$sql->LeftJoin('TC_TRANSLATIONS tt',array('tt.ID_TABLE','tz.ID'))
+                .$sql->Where(array('tt.TABLE'=>'ZONES', 'tt.LOCALE'=>$locale))
+                .$sql->OrderBy(array('tt.NAME'));
+
         $db = $this->container->get('arii_core.db');
         $data = $db->Connector('grid');
-        $data->render_table('TC_ZONES','ID','CODE,NAME,COMMENT,ISO,TYPE_ID,LATITUDE,LONGITUDE');
+        $data->render_sql($qry,'ID','CODE,NAME,COMMENT,ISO,TYPE_ID,LATITUDE,LONGITUDE');
     }
 
     public function formAction() {
+        $sql = $this->container->get('arii_core.sql');                  
+        $sql->setDriver($this->container->getParameter('database_driver'));
+        
+        $request = $this->getRequest();
+        $locale = $request->getLocale();
+        $id = $request->query->get( 'id' );
+        
+        $qry = $sql->Select(array('tz.ID','tt.NAME','tt.DESCRIPTION','tt.COMMENT','tz.CODE','tz.PARENT_ID','tz.ISO','tz.TYPE_ID','tz.LATITUDE','tz.LONGITUDE'))
+                .$sql->From(array('TC_ZONES tz'))
+                .$sql->LeftJoin('TC_TRANSLATIONS tt',array('tt.ID_TABLE','tz.ID'))
+                .$sql->Where(array('tt.TABLE'=>'ZONES', 'tt.LOCALE'=>$locale, 'tz.ID'=>$id))
+                .$sql->OrderBy(array('tt.NAME'));
+
         $db = $this->container->get('arii_core.db');
         $data = $db->Connector('form');
-        $data->render_table('TC_ZONES','ID','CODE,NAME,COMMENT,ISO,TYPE_ID,LATITUDE,LONGITUDE');
+        $data->render_sql($qry,'tz.ID','CODE,NAME,DESCRIPTION,COMMENT,ISO,TYPE_ID,LATITUDE,LONGITUDE');
     }
-
+    
     public function treeAction() {
         $sql = $this->container->get('arii_core.sql');                  
-        $qry = $sql->Select(array('ID','NAME','COMMENT','PARENT_ID'))
-                .$sql->From(array('TC_ZONES'))
-                .$sql->OrderBy(array('NAME'));
+        $sql->setDriver($this->container->getParameter('database_driver'));
+        
+        $request = $this->getRequest();
+        $locale = $request->getLocale();
+       
+        $qry = $sql->Select(array('tz.ID','tt.NAME','tz.CODE','tz.PARENT_ID'))
+                .$sql->From(array('TC_ZONES tz'))
+                .$sql->LeftJoin('TC_TRANSLATIONS tt',array('tt.ID_TABLE','tz.ID'))
+                .$sql->Where(array('tt.TABLE'=>'ZONES', 'tt.LOCALE'=>$locale))
+                .$sql->OrderBy(array('tt.NAME'));
 
         $db = $this->container->get('arii_core.db');
         $data = $db->Connector('tree');
 //        $data->event->attach("beforeRender",array($this,"form_render"));
-        $data->render_table('TC_ZONES','ID','NAME','COMMENT','PARENT_ID');
+        header('Content-type: text/xml;');
+        $data->render_sql($qry,'ID','NAME','CODE','PARENT_ID');
     }
 }

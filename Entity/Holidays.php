@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Audit
  *
- * @ORM\Table(name="TC_DAYS")
+ * @ORM\Table(name="TC_HOLIDAYS")
  * @ORM\Entity(repositoryClass="Arii\TimeBundle\Entity\DaysRepository")
  */
-class Days
+class Holidays
 {
     /**
      * @var integer
@@ -22,11 +22,10 @@ class Days
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=50)
-     */
-    private $name;
+     * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Rules")
+     * @ORM\JoinColumn(nullable=false)
+     **/
+    private $rule;
 
     /**
      * @var datetime
@@ -207,33 +206,10 @@ class Days
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Days
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set day
      *
      * @param \DateTime $day
-     * @return Days
+     * @return Holidays
      */
     public function setDay($day)
     {
@@ -250,5 +226,28 @@ class Days
     public function getDay()
     {
         return $this->day;
+    }
+
+    /**
+     * Set rule
+     *
+     * @param \Arii\TimeBundle\Entity\Rules $rule
+     * @return Holidays
+     */
+    public function setRule(\Arii\TimeBundle\Entity\Rules $rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Get rule
+     *
+     * @return \Arii\TimeBundle\Entity\Rules 
+     */
+    public function getRule()
+    {
+        return $this->rule;
     }
 }

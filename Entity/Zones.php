@@ -238,4 +238,165 @@ class Zones
     {
         return $this->message;
     }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Zones
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Zones
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set iso
+     *
+     * @param string $iso
+     * @return Zones
+     */
+    public function setIso($iso)
+    {
+        $this->iso = $iso;
+
+        return $this;
+    }
+
+    /**
+     * Get iso
+     *
+     * @return string 
+     */
+    public function getIso()
+    {
+        return $this->iso;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param float $latitude
+     * @return Zones
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return float 
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param float $longitude
+     * @return Zones
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return float 
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \Arii\TimeBundle\Entity\Types $type
+     * @return Zones
+     */
+    public function setType(\Arii\TimeBundle\Entity\Types $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \Arii\TimeBundle\Entity\Types 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Arii\TimeBundle\Entity\Zones $parent
+     * @return Zones
+     */
+    public function setParent(\Arii\TimeBundle\Entity\Zones $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Arii\TimeBundle\Entity\Zones 
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
 }

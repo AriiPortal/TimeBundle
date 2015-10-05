@@ -26,4 +26,12 @@ class DefaultController extends Controller
         return $this->render('AriiTimeBundle:Default:ribbon.json.twig',array(), $response );
     }
 
+    public function menuAction()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/xml');
+        
+        return $this->render('AriiTimeBundle:Default:menu.xml.twig',array(), $response );
+    }
+
 }

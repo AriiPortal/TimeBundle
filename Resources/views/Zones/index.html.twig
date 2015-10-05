@@ -25,7 +25,7 @@ dhtmlxEvent(window,"load",function() {
 
     dhxGrid = globalLayout.cells("b").attachGrid();
     dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
-    dhxGrid.setHeader("{{ "Code" | trans }},{{ "Name" | trans }},{{ "Comment" | trans }},{{ "ISO" | trans }},{{ "Type" | trans }},{{ "Latitude" | trans }},{{ "Longitude" | trans }}");
+    dhxGrid.setHeader("{{ "Code" | trans }},{{ "Name" | trans }},{{ "Description" | trans }},{{ "ISO" | trans }},{{ "Type" | trans }},{{ "Latitude" | trans }},{{ "Longitude" | trans }}");
     dhxGrid.attachHeader("#text_filter,#text_filter,#text_filter,#text_filter,#select_filter,#numeric_filter,#numeric_filter");
     dhxGrid.setInitWidths("80,200,*,50,100,100,100");
     dhxGrid.setColAlign("left,left,left,left,left,right,right");
@@ -85,6 +85,11 @@ dhtmlxEvent(window,"load",function() {
            myMap.panTo(latLng);   
        });
    });
+
+    dhxTree.attachEvent("onClick",function(id){
+        alert(id);
+        dhxGrid.load("{{ url('xml_Time_zones') }}?id="+id);
+    })    
 
 });
 </script>

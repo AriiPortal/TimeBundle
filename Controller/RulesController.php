@@ -29,7 +29,7 @@ class RulesController extends Controller
         $id = $request->query->get( 'id' );
         
         $qry = $sql->Select(array('tz.ID','tz.RULE',
-                'tt.NAME','tt.DESCRIPTION','tt.COMMENT'))
+                'tt.NAME','tt.DESCRIPTION','tt.COMMENT','tz.UPDATED'))
                 .$sql->From(array('TC_RULES tz'))
                 .$sql->LeftJoin('TC_TRANSLATIONS tt',array('tt.ID_TABLE','tz.ID'))
                 .$sql->Where(array('tz.ID' => $id, 'tt.TABLE' => 'RULES', 'tt.LOCALE'=>$locale))
@@ -37,7 +37,7 @@ class RulesController extends Controller
 
         $db = $this->container->get('arii_core.db');
         $data = $db->Connector('form');
-        $data->render_sql($qry,'tz.ID','NAME,RULE,DESCRIPTION');
+        $data->render_sql($qry,'tz.ID','ID,NAME,RULE,DESCRIPTION,UPDATED');
     }
 
     public function gridAction() {
@@ -81,9 +81,9 @@ class RulesController extends Controller
 
         // Appel du service timecode
         $tc = $this->container->get('arii_time.timecode');
-        $year = 2015;
+        $year = 2000;
         $grid = "<?xml version='1.0' encoding='utf-8' ?>\n<rows>\n";
-        for($i=0;$i<10;$i++) {
+        for($i=0;$i<=30;$i++) {
             $date = $tc->Date2ISO($tc->Reference($rule,$year+$i));
             $grid .= "<row><cell>$date</cell></row>\n";            
         }
@@ -109,6 +109,57 @@ class RulesController extends Controller
         return $response;
     }
 
+    public function saveAction() {
+        $request = $this->getRequest();
+        $id =$request->request->get( 'ID' );
+        $rule =$request->request->get( 'RULE' );
+        $name =$request->request->get( 'NAME' );
+
+/* pour debug        
+        $id =$request->query->get( 'ID' );
+        $name =$request->query->get( 'NAME' );
+        $rule =$request->query->get( 'RULE' );
+*/
+        
+        // connexion base de données
+        $em = $this->getDoctrine()->getManager();
+        
+        $rules = new \Arii\TimeBundle\Entity\Rules();
+        if ($id!="") {
+            $rules = $em->getRepository("AriiTimeBundle:Rules")->find($id);
+            
+            // Suppression des dates deja calculées
+            $days = $em->getRepository("AriiTimeBundle:Holidays")->findBy(array('rule'=>$id));
+            foreach ($days as $d) {
+                $em->remove($d);
+                $em->flush();
+            }
+        }
+        
+        $rules->setName($name);
+        $rules->setRule($rule);
+        $rules->setUpdated(new \DateTime());
+        
+        $em->persist($rules);
+        
+        // On rajoute les dates
+        // Appel du service timecode
+        $tc = $this->container->get('arii_time.timecode');
+        $year = 2000;
+        for($i=0;$i<50;$i++) {
+            $date = $tc->Date2ISO($tc->Reference($rule,$year+$i));
+            $days = new \Arii\TimeBundle\Entity\Holidays();
+            $days->setRule($rules);
+            $days->setDay(new \DateTime($date));
+            $em->persist($days);
+        }
+        
+        $em->flush();
+        
+        print $this->get('translator')->trans('Rule saved');
+        exit();
+    }
+    
     public function scheduleAction() {
         $sql = $this->container->get('arii_core.sql'); 
         $sql->setDriver($this->container->getParameter('database_driver'));

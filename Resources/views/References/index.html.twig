@@ -1,15 +1,16 @@
 {% extends "AriiTimeBundle::layout.html.twig" %}
 {% block body %}
 <script charset="utf-8">
+ref_id = 0;
 
 dhtmlxEvent(window,"load",function() {
         
     globalLayout = new dhtmlXLayoutObject(document.body,"3L");  
-    globalLayout.cells("a").setWidth(350); 
-    globalLayout.cells("a").hideHeader(); 
-    globalLayout.cells("b").hideHeader(); 
-    globalLayout.cells("c").hideHeader(); 
-    
+    globalLayout.cells("a").setWidth(350);
+    globalLayout.cells("c").setText( "{{"Rules" | trans }}" );
+    globalLayout.cells("a").hideHeader();
+    globalLayout.cells("b").hideHeader();
+   
     globalMenu = globalLayout.cells("a").attachMenu();
     globalMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
     globalMenu.loadStruct("{{ url('xml_menu') }}?route={{ app.request.attributes.get('_route') }}");
@@ -32,13 +33,13 @@ dhtmlxEvent(window,"load",function() {
     dhxList.load("{{ url('xml_Time_references_list') }}");
     dhxList.attachEvent("onRowDblClicked", Detail );
 
-    var myTab = globalLayout.cells("b").attachLayout("2U");
+    myTab = globalLayout.cells("b").attachLayout("2U");
     myTab.cells("a").setWidth(350); 
     myTab.cells("a").hideHeader();     
     myTab.cells("b").hideHeader();
     // myTab.addTab("reference","{{ "Reference" | trans }}","100px", null, true);
     // myTab.addTab("rules","{{ "Rules" | trans }}","100px");
-
+ 
    formData = [
         { type: "settings", position: "label-left", labelWidth: 110, inputWidth: 200,labelAlign: "right",noteWidth: 200 },
         {type: "hidden",name: "id"},         
@@ -67,6 +68,11 @@ dhtmlxEvent(window,"load",function() {
     ];
     myForm = myTab.cells("a").attachForm(formData);
 
+    myGridMenu = new dhtmlXMenuObject(null);
+    myGridMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/wa/') }}" );
+    myGridMenu.renderAsContextMenu();
+    myGridMenu.loadStruct("{{ url('xml_Time_context_menu') }}");
+
     dhxGrid = myTab.cells("b").attachGrid();
     dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
     dhxGrid.setHeader("{{ "Name" | trans }},{{ "Description" | trans }},{{ "Rule" | trans }}");
@@ -76,13 +82,29 @@ dhtmlxEvent(window,"load",function() {
     dhxGrid.setColTypes("ro,ro,ro");
     dhxGrid.setColSorting("str,str,str");
     dhxGrid.enableDragAndDrop(true);    
+    dhxGrid.enableContextMenu(myGridMenu);
     dhxGrid.init();
+    dhxGrid.attachEvent("OnDrop",function(dId,tId,sObj,tObj) {
+        if (ref_id==0) return;
+        if (dId.substr(0,1)=='R') return;
+        // si il est deja dans la liste
+        if (dhxGrid.getRowIndex("R"+dId)>=0) return;
+        dhx4.ajax.post("{{ url('xml_Time_references_add_rule') }}?ref_id="+ref_id+"&rule_id="+dId,function(loader,response){
+            dhtmlx.message({
+            type: "Notice",
+            expire: 10000,
+            width: "500px",
+            text: loader.xmlDoc.responseText });
+        });
+    });
+    dhxGrid.attachEvent("onRowDblClicked", function(id) {
+        Test(dhxGrid.cells(id,2).getValue());  
+    });
 
-    
-    var myWork = globalLayout.cells("c").attachLayout("2U");
-    myWork.cells("b").setWidth(350); 
-    myWork.cells("a").hideHeader();     
-    myWork.cells("b").hideHeader();     
+    myWork = globalLayout.cells("c").attachLayout("2U");
+    myWork.cells("b").setWidth(200); 
+    myWork.cells("a").setText("{{ "Rules" | trans }}");     
+    myWork.cells("b").setText("{{ "Test Zone" | trans }}");     
 
     // Liste des règles
     dhxRules = myWork.cells("a").attachGrid();
@@ -96,28 +118,59 @@ dhtmlxEvent(window,"load",function() {
     dhxRules.enableDragAndDrop(true);
     dhxRules.init();
     dhxRules.load("{{ url('xml_Time_rules') }}");
+    dhxRules.attachEvent("onRowDblClicked", function(id) {
+        Test(dhxRules.cells(id,2).getValue());  
+    });
     
     // Zone de test
     dhxTest = myWork.cells("b").attachGrid();
     dhxTest.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
-    dhxTest.setHeader("{{ "Name" | trans }},{{ "Date" | trans }}");
-    dhxTest.attachHeader("#text_filter,#text_filter");
-    dhxTest.setInitWidths("*,150");
-    dhxTest.setColAlign("left,right");
-    dhxTest.setColTypes("ro,ro");
-    dhxTest.setColSorting("str,date");
+    dhxTest.setHeader("{{ "Date" | trans }}");
+    dhxTest.attachHeader("#text_filter");
+    dhxTest.setInitWidths("*");
+    dhxTest.setColAlign("right");
+    dhxTest.setColTypes("ro");
+    dhxTest.setColSorting("date");
     dhxTest.enableDragAndDrop(true);
     dhxTest.init();
 
+    myGridMenu.attachEvent("onClick", function (id,value) {
+        var data = dhxGrid.contextID.split("_");
+        //rowInd_colInd;
+        var rId = data[0];
+        switch(id) {
+            case 'delete':
+                dhx4.ajax.post("{{ url('xml_Time_references_del_rule') }}?ref_id="+ref_id+"&rule_id="+rId.substr(1),function(loader,response){
+                    dhtmlx.message({
+                    type: "Notice",
+                    expire: 10000,
+                    width: 500,
+                    text: loader.xmlDoc.responseText });
+                    dhxGrid.deleteRow(rId);
+                });
+                break;
+            default:
+                alert(id);
+        }
+    });
 });
 
 function Detail(id) {
     globalLayout.cells("b").progressOn();
+    ref_id = id;
     myForm.load("{{ url('xml_Time_references_form') }}?id="+id, function(){    
         dhxGrid.clearAndLoad("{{ url('xml_Time_references_rules') }}?id="+id, function(){    
             globalLayout.cells("b").progressOff();
         });    
     });    
 }
+
+function Test(rule) {
+    myWork.cells("b").progressOn();
+    dhxTest.clearAndLoad("{{ url('xml_Time_rule_test') }}?rule="+encodeURIComponent(rule), function(){    
+        myWork.cells("b").progressOff();
+    });    
+}
+
 </script>
 {% endblock %}

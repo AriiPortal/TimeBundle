@@ -1,13 +1,45 @@
 {% extends "AriiTimeBundle::layout.html.twig" %}
 {% block body %}
+<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+<div class="dhx_cal_navline">
+<div class="dhx_cal_prev_button">&nbsp;</div>
+<div class="dhx_cal_next_button">&nbsp;</div>
+<div class="dhx_cal_today_button"></div>
+<div class="dhx_cal_date"></div>
+<div class="dhx_cal_tab" name="day_tab" style="right:205px;"></div>
+<div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+<div class="dhx_cal_tab" name="month_tab" style="right:75px;"></div>
+<div class="dhx_cal_tab" name="year_tab" style="right:10px;"></div>
+<div class="dhx_cal_tab" name="agenda_tab" style="right:250px;"></div>
+</div>
+<div class="dhx_cal_header">
+</div>
+<div class="dhx_cal_data">
+</div>	
+</div>
+<style>
+/*event with fixed time, in month view*/
+.dhx_cal_event_clear.w {
+    background-color: orange;
+    color: black !important;
+}
+.dhx_cal_event_clear.o {
+    background-color: green;
+    color: black !important;
+}
+.dhx_cal_event_clear.c {
+    background-color: red;
+    color: black !important;
+}
+</style>
 <script charset="utf-8">
-
 dhtmlxEvent(window,"load",function() {
         
-    globalLayout = new dhtmlXLayoutObject(document.body,"2U");  
+    globalLayout = new dhtmlXLayoutObject(document.body,"3L");  
     globalLayout.cells("a").setWidth(350); 
     globalLayout.cells("a").hideHeader(); 
     globalLayout.cells("b").hideHeader(); 
+    globalLayout.cells("c").hideHeader(); 
 
     globalMenu = globalLayout.cells("a").attachMenu();
     globalMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
@@ -19,10 +51,18 @@ dhtmlxEvent(window,"load",function() {
     myRibbon.attachEvent("onStateChange", StateRibbon );
     myRibbon.attachEvent("onClick", ClickRibbon );    
     
-    dhxTree = globalLayout.cells("a").attachTree();
-    dhxTree.setImagesPath("{{ asset('bundles/ariicore/images/tree/') }}");
-    dhxTree.load( "{{ url('xml_Time_zones_tree') }}" );
-
+    dhxGrid = globalLayout.cells("a").attachGrid();
+    dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxGrid.setHeader("{{ "Name" | trans }},{{ "Description" | trans }}");
+    dhxGrid.attachHeader("#text_filter,#text_filter");
+    dhxGrid.setInitWidths("180,*");
+    dhxGrid.setColAlign("left,left");
+    dhxGrid.setColTypes("ro,ro");
+    dhxGrid.setColSorting("str,str");
+    dhxGrid.init();
+    dhxGrid.load("{{ url('xml_Time_calendars') }}");
+    dhxGrid.attachEvent("onRowDblClicked", Detail );
+    
     dhxGrid = globalLayout.cells("b").attachGrid();
     dhxGrid.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
     dhxGrid.setHeader("{{ "ISO" | trans }},#cspan,{{ "Name" | trans }},{{ "Local name" | trans }}");
@@ -34,6 +74,117 @@ dhtmlxEvent(window,"load",function() {
     dhxGrid.init();
     dhxGrid.load("{{ url('xml_Time_zones') }}");
     
+    var myLayout = globalLayout.cells("b").attachLayout("2U");
+    myLayout.cells("a").setHeight(300); 
+    myLayout.cells("b").setWidth(350); 
+    myLayout.cells("a").hideHeader();     
+    myLayout.cells("b").hideHeader();
+    // myTab.addTab("reference","{{ "Reference" | trans }}","100px", null, true);
+    // myTab.addTab("rules","{{ "Rules" | trans }}","100px");
+
+    myGridToolbar = myLayout.cells("a").attachToolbar();
+    myGridToolbar.setIconsPath("{{ asset('bundles/ariicore/images/toolbar/') }}");
+    myGridToolbar.loadStruct( "{{ url('xml_Time_calendars_toolbar') }}");
+
+   formData = [
+        { type: "settings", position: "label-left", labelWidth: 110, inputWidth: 300,labelAlign: "right",noteWidth: 200 },
+        {type: "hidden",name: "id"},         
+        { type: "input",
+          name: "NAME",
+          label: "{{ "Name"| trans }}",
+          required: true
+        },
+        { type: "input",
+          name: "RULE",
+          label: "{{ "Rule"| trans }}",
+          required: true
+        },
+        { type: "input",
+          rows: 3,
+          name: "DESCRIPTION",
+          label: "{{ "Description"| trans }}"
+        }
+    ];
+    myForm = myLayout.cells("a").attachForm(formData);
+
+    dhxTest = myLayout.cells("b").attachGrid();
+    dhxTest.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
+    dhxTest.setHeader("{{ "Name" | trans }}");
+    dhxTest.attachHeader("#text_filter");
+    dhxTest.setInitWidths("*");
+    dhxTest.setColAlign("right");
+    dhxTest.setColTypes("ro");
+    dhxTest.setColSorting("date");
+    dhxTest.init();
+
+    //scheduler.locale.labels.section_custom="Section";
+    scheduler.config.details_on_create=false;
+    scheduler.config.details_on_dblclick=false;
+    scheduler.config.server_utc = false; 
+    scheduler.config.xml_date="%Y-%m-%d %H:%i";
+
+    scheduler.config.first_hour = 0;
+    scheduler.config.last_hour = 24;
+/*
+    scheduler.locale.labels.day_tab = "{{ "Day" | trans }}";
+    scheduler.locale.labels.month_tab = "{{ "Month" | trans }}";
+    scheduler.locale.labels.week_tab = "{{ "Week" | trans }}";
+    scheduler.locale.labels.year_tab = "{{ "Year" | trans }}";
+    scheduler.locale.labels.agenda_tab = "{{ "Agenda" | trans }}";
+*/
+    scheduler.config.multi_day = true;
+
+    scheduler.config.year_x = 4; //2 months in a row
+    scheduler.config.year_y = 3; //3 months in a column
+    //===============
+    //Data loading
+    //===============
+    scheduler.config.lightbox.sections=[	
+        { name:"description", height:130, map_to:"text", type:"textarea" , focus:true},
+        { name:"time", height:72, type:"time", map_to:"auto"}
+     ];
+
+    scheduler.templates.event_class=function(start,end,event){
+        return event.color;
+    }
+
+    scheduler.config.readonly = true;
+    scheduler.init('scheduler_here',null, "month");	
+
+//    scheduler.load( "{ { url('xml_Time_calendar') }}" );
+    timeline  = globalLayout.cells("c").attachScheduler( new Date() , 'year', 'scheduler_here', scheduler);
+
+    scheduler.attachEvent("onClick",function(id, value){
+        alert(id);
+    });
+
+    myGridToolbar.attachEvent("onClick",function(itemid){
+         switch (itemid) {
+            case 'refresh':
+                globalLayout.cells("b").progressOn();
+                dhxTest.clearAndLoad("{{ url('xml_Time_calendar_test') }}?rule="+ encodeURIComponent(myForm.getItemValue('RULE')), function () {
+                    scheduler.clearAll();
+                    scheduler.load("{{ url('xml_Time_calendar_test_schedule') }}?rule="+ encodeURIComponent(myForm.getItemValue('RULE')));
+                    globalLayout.cells("b").progressOff();
+                });
+                break;
+            default:
+                alert(itemid);
+                break;
+        }
+    });
+
 });
+
+function Detail(id) {
+    globalLayout.cells("b").progressOn();
+    myForm.load("{{ url('xml_Time_calendars_form') }}?id="+id, function(){    
+        dhxTest.clearAndLoad("{{ url('xml_Time_calendar_test') }}?rule="+ encodeURIComponent(myForm.getItemValue('RULE')), function () {
+            scheduler.clearAll();
+            scheduler.load("{{ url('xml_Time_calendar_test_schedule') }}?rule="+ encodeURIComponent(myForm.getItemValue('RULE')));
+            globalLayout.cells("b").progressOff();
+        });
+    });    
+}
 </script>
 {% endblock %}

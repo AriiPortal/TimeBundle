@@ -45,7 +45,7 @@ dhtmlxEvent(window,"load",function() {
     dhxGrid.setColTypes("ro,ro");
     dhxGrid.setColSorting("str,str");
     dhxGrid.init();
-    dhxGrid.load("{{ url('xml_Time_rules') }}");
+    dhxGrid.load("{{ url('xml_Time_holidays') }}");
     dhxGrid.attachEvent("onRowDblClicked", Detail );
     
     var myLayout = globalLayout.cells("b").attachLayout("2U");

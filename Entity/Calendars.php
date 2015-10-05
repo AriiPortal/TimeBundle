@@ -24,15 +24,36 @@ class Calendars
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=20)
+     * @ORM\Column(name="name", type="string", length=128)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rule", type="string", length=255)
+     */
+    private $rule;
 
     /**
      * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Zones")
      * @ORM\JoinColumn(nullable=true)
      **/
     private $zone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="we", type="string", length=6)
+     */
+    private $we;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reference", type="string", length=32)
+     */
+    private $reference;
 
     /**
      * Get id
@@ -203,5 +224,120 @@ class Calendars
     public function getMessage()
     {
         return $this->message;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Calendars
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set rule
+     *
+     * @param string $rule
+     * @return Calendars
+     */
+    public function setRule($rule)
+    {
+        $this->rule = $rule;
+
+        return $this;
+    }
+
+    /**
+     * Get rule
+     *
+     * @return string 
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * Set we
+     *
+     * @param string $we
+     * @return Calendars
+     */
+    public function setWe($we)
+    {
+        $this->we = $we;
+
+        return $this;
+    }
+
+    /**
+     * Get we
+     *
+     * @return string 
+     */
+    public function getWe()
+    {
+        return $this->we;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     * @return Calendars
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string 
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * Set zone
+     *
+     * @param \Arii\TimeBundle\Entity\Zones $zone
+     * @return Calendars
+     */
+    public function setZone(\Arii\TimeBundle\Entity\Zones $zone = null)
+    {
+        $this->zone = $zone;
+
+        return $this;
+    }
+
+    /**
+     * Get zone
+     *
+     * @return \Arii\TimeBundle\Entity\Zones 
+     */
+    public function getZone()
+    {
+        return $this->zone;
     }
 }
