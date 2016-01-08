@@ -36,7 +36,7 @@ class Calendars
     private $rule;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Arii\TimeBundle\Entity\Zones")
+     * @ORM\ManyToOne(targetEntity="Arii\CoreBundle\Entity\Zone")
      * @ORM\JoinColumn(nullable=true)
      **/
     private $zone;
