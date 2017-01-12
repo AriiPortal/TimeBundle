@@ -2,158 +2,158 @@
 # PAGES PRINCIPALES
 # --------------------------------------------------------------------------
 arii_Time_index:
-    pattern:  /
+    path:  /
     defaults: { _controller: AriiTimeBundle:Default:index }
 
 arii_Time_readme:
-    pattern:  /readme
+    path:  /readme
     defaults: { _controller: AriiTimeBundle:Default:readme }
 
 xml_Time_toolbar:
-    pattern:  /toolbar.xml
+    path:  /toolbar.xml
     defaults: { _controller: AriiTimeBundle:Default:toolbar }
 
 json_Time_ribbon:
-    pattern:  /ribbon.json
+    path:  /ribbon.json
     defaults: { _controller: AriiTimeBundle:Default:ribbon }
 
 xml_Time_menu:
-    pattern:  /menu.xml
+    path:  /menu.xml
     defaults: { _controller: AriiTimeBundle:Default:menu }
 
 xml_Time_context_menu:
-    pattern:  /context_menu.xml
+    path:  /context_menu.xml
     defaults: { _controller: AriiTimeBundle:Default:menu }
 
 # --------------------------------------------------------------------------
 # ZONES
 # --------------------------------------------------------------------------
 arii_Time_zones:
-    pattern:  /zones
+    path:  /zones
     defaults: { _controller: AriiTimeBundle:Zones:index }
 
 xml_Time_zones:
-    pattern:  /zones/grid.xml
+    path:  /zones/grid.xml
     defaults: { _controller: AriiTimeBundle:Zones:grid }
 
 xml_Time_zones_tree:
-    pattern:  /zones/tree.xml
+    path:  /zones/tree.xml
     defaults: { _controller: AriiTimeBundle:Zones:tree }
 
 xml_Time_zones_form:
-    pattern:  /zones/form.xml
+    path:  /zones/form.xml
     defaults: { _controller: AriiTimeBundle:Zones:form }
 
 # --------------------------------------------------------------------------
 # REFERENCES
 # --------------------------------------------------------------------------
 arii_Time_references:
-    pattern:  /references
+    path:  /references
     defaults: { _controller: AriiTimeBundle:References:index }
 
 xml_Time_references:
-    pattern:  /references/grid.xml
+    path:  /references/grid.xml
     defaults: { _controller: AriiTimeBundle:References:grid }
 
 xml_Time_references_tree:
-    pattern:  /references/tree.xml
+    path:  /references/tree.xml
     defaults: { _controller: AriiTimeBundle:References:tree }
 
 xml_Time_references_list:
-    pattern:  /references/list.xml
+    path:  /references/list.xml
     defaults: { _controller: AriiTimeBundle:References:list }
 
 xml_Time_references_form:
-    pattern:  /references/form.xml
+    path:  /references/form.xml
     defaults: { _controller: AriiTimeBundle:References:form }
 
 xml_Time_references_rules:
-    pattern:  /references/rules.xml
+    path:  /references/rules.xml
     defaults: { _controller: AriiTimeBundle:References:rules }
 
 xml_Time_references_add_rule:
-    pattern:  /references/add_rule.xml
+    path:  /references/add_rule.xml
     defaults: { _controller: AriiTimeBundle:References:add_rule }
 
 xml_Time_references_del_rule:
-    pattern:  /references/del_rule.xml
+    path:  /references/del_rule.xml
     defaults: { _controller: AriiTimeBundle:References:del_rule }
 
 # --------------------------------------------------------------------------
 # CALENDARS
 # --------------------------------------------------------------------------
 arii_Time_calendars:
-    pattern:  /calendars
+    path:  /calendars
     defaults: { _controller: AriiTimeBundle:Calendars:index }
 
 xml_Time_calendars_toolbar:
-    pattern:  /calendars/toolbar.xml
+    path:  /calendars/toolbar.xml
     defaults: { _controller: AriiTimeBundle:Calendars:toolbar }
 
 xml_Time_calendars:
-    pattern:  /calendars/grid.xml
+    path:  /calendars/grid.xml
     defaults: { _controller: AriiTimeBundle:Calendars:grid }
 
 xml_Time_calendars_form:
-    pattern:  /calendars/form.xml
+    path:  /calendars/form.xml
     defaults: { _controller: AriiTimeBundle:Calendars:form }
 
 xml_Time_calendar_test:
-    pattern:  /calendars/test.xml
+    path:  /calendars/test.xml
     defaults: { _controller: AriiTimeBundle:Calendars:test }
 
 xml_Time_calendar_test_schedule:
-    pattern:  /calendars/schedule.xml
+    path:  /calendars/schedule.xml
     defaults: { _controller: AriiTimeBundle:Calendars:schedule }
 # --------------------------------------------------------------------------
 # RULES
 # --------------------------------------------------------------------------
 arii_Time_rules:
-    pattern:  /rules
+    path:  /rules
     defaults: { _controller: AriiTimeBundle:Rules:index }
 
 xml_Time_rules_toolbar:
-    pattern:  /rules/toolbar.xml
+    path:  /rules/toolbar.xml
     defaults: { _controller: AriiTimeBundle:Rules:toolbar }
 
 xml_Time_rules:
-    pattern:  /rules/grid.xml
+    path:  /rules/grid.xml
     defaults: { _controller: AriiTimeBundle:Rules:grid }
 
 xml_Time_rules_form:
-    pattern:  /rules/form.xml
+    path:  /rules/form.xml
     defaults: { _controller: AriiTimeBundle:Rules:form }
 
 xml_Time_rule_test:
-    pattern:  /rules/test.xml
+    path:  /rules/test.xml
     defaults: { _controller: AriiTimeBundle:Rules:test }
 
 xml_Time_rule_save:
-    pattern:  /rules/save.xml
+    path:  /rules/save.xml
     defaults: { _controller: AriiTimeBundle:Rules:save }
 
 xml_Time_rule_test_schedule:
-    pattern:  /rules/schedule.xml
+    path:  /rules/schedule.xml
     defaults: { _controller: AriiTimeBundle:Rules:schedule }
 
 # --------------------------------------------------------------------------
 # DAYS
 # --------------------------------------------------------------------------
 arii_Time_days:
-    pattern:  /days
+    path:  /days
     defaults: { _controller: AriiTimeBundle:Days:index }
 
 xml_Time_days:
-    pattern:  /days/grid.xml
+    path:  /days/grid.xml
     defaults: { _controller: AriiTimeBundle:Days:grid }
 
 # --------------------------------------------------------------------------
 # HOLIDAYS
 # --------------------------------------------------------------------------
 arii_Time_holidays:
-    pattern:  /holidays
+    path:  /holidays
     defaults: { _controller: AriiTimeBundle:Holidays:index }
 
 xml_Time_holidays:
-    pattern:  /holidays/list.xml
+    path:  /holidays/list.xml
     defaults: { _controller: AriiTimeBundle:Holidays:list }

@@ -29,7 +29,7 @@ class Rules
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Arii\CoreBundle\Entity\Zone")
+     * @ORM\ManyToOne(targetEntity="Arii\CoreBundle\Entity\Region")
      * @ORM\JoinColumn(nullable=true)
      **/
     private $zone;
